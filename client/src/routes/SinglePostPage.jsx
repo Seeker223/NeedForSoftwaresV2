@@ -6,6 +6,7 @@ import Comments from "../components/Comments";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "timeago.js";
+import { Helmet } from "react-helmet-async";
 
 const fetchPost = async (slug) => {
   const res = await axios.get(`${import.meta.env.VITE_API_URL}/posts/${slug}`);
@@ -24,8 +25,55 @@ const SinglePostPage = () => {
   if (error) return "Something went wrong!" + error.message;
   if (!data) return "Post not found!";
 
+  const pageTitle = `${data.title} | NeedForSoftwares`;
+  const pageDescription =
+    data.desc ||
+    "NeedForSoftwares blog post about the Hender Xender social networking app and Nigeria tech innovation.";
+  const pageUrl = `https://need-for-softwares-v2.vercel.app/${data.slug}`;
+  const pageImage = data.img
+    ? `https://ik.imagekit.io/cu7rwsp4u/${data.img.replace(/^\/+/, "")}`
+    : "https://need-for-softwares-v2.vercel.app/logo.png";
+
   return (
     <div className="flex flex-col gap-8">
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        <link rel="canonical" href={pageUrl} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:url" content={pageUrl} />
+        <meta property="og:image" content={pageImage} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="twitter:image" content={pageImage} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: data.title,
+            description: pageDescription,
+            image: pageImage,
+            datePublished: data.createdAt,
+            dateModified: data.updatedAt || data.createdAt,
+            author: {
+              "@type": "Person",
+              name: data.user?.username || "NeedForSoftwares",
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "NeedForSoftwares",
+              logo: {
+                "@type": "ImageObject",
+                url: "https://need-for-softwares-v2.vercel.app/logo.png",
+              },
+            },
+            mainEntityOfPage: pageUrl,
+          })}
+        </script>
+      </Helmet>
       {/* detail */}
       <div className="flex gap-8">
         <div className="lg:w-3/5 flex flex-col gap-8">
