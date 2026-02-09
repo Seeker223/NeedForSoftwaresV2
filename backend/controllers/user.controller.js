@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import { ensureUser } from "../lib/ensureUser.js";
 
 export const getUserSavedPosts = async (req, res) => {
   const clerkUserId = req.auth.userId;
@@ -7,7 +8,7 @@ export const getUserSavedPosts = async (req, res) => {
     return res.status(401).json("Not authenticated!");
   }
 
-  const user = await User.findOne({ clerkUserId });
+  const user = await ensureUser(clerkUserId);
 
   if (!user) {
     return res.status(404).json("User not found!");
@@ -24,7 +25,7 @@ export const savePost = async (req, res) => {
     return res.status(401).json("Not authenticated!");
   }
 
-  const user = await User.findOne({ clerkUserId });
+  const user = await ensureUser(clerkUserId);
 
   if (!user) {
     return res.status(404).json("User not found!");

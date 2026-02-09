@@ -1,5 +1,6 @@
 import Comment from "../models/comment.model.js";
 import User from "../models/user.model.js";
+import { ensureUser } from "../lib/ensureUser.js";
 
 export const getPostComments = async (req, res) => {
   const comments = await Comment.find({ post: req.params.postId })
@@ -17,7 +18,7 @@ export const addComment = async (req, res) => {
     return res.status(401).json("Not authenticated!");
   }
 
-  const user = await User.findOne({ clerkUserId });
+  const user = await ensureUser(clerkUserId);
 
   if (!user) {
     return res.status(404).json("User not found!");
@@ -49,7 +50,7 @@ export const deleteComment = async (req, res) => {
     return res.status(200).json("Comment has been deleted");
   }
 
-  const user = await User.findOne({ clerkUserId });
+  const user = await ensureUser(clerkUserId);
 
   if (!user) {
     return res.status(404).json("User not found!");
