@@ -60,19 +60,19 @@ const Comments = ({ postId }) => {
 
   return (
     <div className="flex flex-col gap-8 lg:w-3/5 mb-12">
-      <h1 className="text-xl text-gray-500 underline">Comments</h1>
+      <h1 className="text-xl text-slate-700 font-semibold">Comments</h1>
       <form
         onSubmit={handleSubmit}
-        className="flex items-center justify-between gap-8 w-full"
+        className="flex items-center justify-between gap-8 w-full bg-white/80 border border-slate-200/70 rounded-3xl p-4 shadow-card"
       >
         <textarea
           name="desc"
           placeholder="Write a comment..."
-          className="w-full p-4 rounded-xl"
+          className="w-full p-3 rounded-2xl bg-transparent outline-none text-slate-700 placeholder:text-slate-400"
           disabled={!isSignedIn}
         />
         <button
-          className="bg-blue-800 px-4 py-3 text-white font-medium rounded-xl disabled:bg-blue-400 disabled:cursor-not-allowed"
+          className="bg-brand-700 px-4 py-3 text-white font-medium rounded-xl shadow-soft hover:bg-brand-800 disabled:bg-brand-300 disabled:cursor-not-allowed"
           disabled={!isSignedIn}
         >
           Send

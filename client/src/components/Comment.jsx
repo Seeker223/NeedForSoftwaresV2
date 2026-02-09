@@ -34,23 +34,23 @@ const Comment = ({ comment, postId }) => {
   });
 
   return (
-    <div className="p-4 bg-slate-50 rounded-xl mb-8">
+    <div className="p-4 bg-white/80 border border-slate-200/70 rounded-2xl mb-6 shadow-card">
       <div className="flex items-center gap-4">
         {comment.user.img && (
           <Image
             src={comment.user.img}
-            className="w-10 h-10 rounded-full object-cover"
+            className="w-10 h-10 rounded-full object-cover ring-2 ring-brand-100"
             w="40"
           />
         )}
-        <span className="font-medium">{comment.user.username}</span>
-        <span className="text-sm text-gray-500">
+        <span className="font-medium text-slate-800">{comment.user.username}</span>
+        <span className="text-sm text-slate-500">
           {format(comment.createdAt)}
         </span>
         {user &&
           (comment.user.username === user.username || role === "admin") && (
             <span
-              className="text-xs text-red-300 hover:text-red-500 cursor-pointer"
+              className="text-xs text-red-400 hover:text-red-600 cursor-pointer"
               onClick={() => mutation.mutate()}
             >
               delete
@@ -59,7 +59,7 @@ const Comment = ({ comment, postId }) => {
           )}
       </div>
       <div className="mt-4">
-        <p>{comment.desc}</p>
+        <p className="text-slate-700">{comment.desc}</p>
       </div>
     </div>
   );

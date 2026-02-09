@@ -78,15 +78,15 @@ const Write = () => {
 
   return (
     <div className="h-[calc(100vh-64px)] md:h-[calc(100vh-80px)] flex flex-col gap-6">
-      <h1 className="text-cl font-light">Create a New Post</h1>
+      <h1 className="text-2xl font-semibold text-slate-800">Create a New Post</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-6 flex-1 mb-6">
         <Upload type="image" setProgress={setProgress} setData={setCover}>
-          <button className="w-max p-2 shadow-md rounded-xl text-sm text-gray-500 bg-white">
+          <button className="w-max p-2 shadow-card rounded-xl text-sm text-slate-600 bg-white/80 border border-slate-200/70 hover:bg-brand-50 transition">
             Add a cover image
           </button>
         </Upload>
         <input
-          className="text-4xl font-semibold bg-transparent outline-none"
+          className="text-3xl md:text-4xl font-semibold bg-transparent outline-none text-slate-900"
           type="text"
           placeholder="My Awesome Story"
           name="title"
@@ -99,7 +99,7 @@ const Write = () => {
           <select
             name="category"
             id=""
-            className="p-2 rounded-xl bg-white shadow-md"
+            className="p-2 rounded-xl bg-white/80 border border-slate-200/70 shadow-card"
           >
             <option value="general">General</option>
             <option value="web-design">Web Design</option>
@@ -110,22 +110,26 @@ const Write = () => {
           </select>
         </div>
         <textarea
-          className="p-4 rounded-xl bg-white shadow-md"
+          className="p-4 rounded-xl bg-white/80 border border-slate-200/70 shadow-card"
           name="desc"
           placeholder="A Short Description"
         />
         <div className="flex flex-1 ">
           <div className="flex flex-col gap-2 mr-2">
             <Upload type="image" setProgress={setProgress} setData={setImg}>
-              Image
+              <span className="px-3 py-2 text-sm rounded-xl bg-white/80 border border-slate-200/70 shadow-card hover:bg-brand-50 transition">
+                Image
+              </span>
             </Upload>
             <Upload type="video" setProgress={setProgress} setData={setVideo}>
-              Video
+              <span className="px-3 py-2 text-sm rounded-xl bg-white/80 border border-slate-200/70 shadow-card hover:bg-brand-50 transition">
+                Video
+              </span>
             </Upload>
           </div>
           <ReactQuill
             theme="snow"
-            className="flex-1 rounded-xl bg-white shadow-md"
+            className="flex-1 rounded-xl bg-white/80 border border-slate-200/70 shadow-card"
             value={value}
             onChange={setValue}
             readOnly={0 < progress && progress < 100}
@@ -133,11 +137,11 @@ const Write = () => {
         </div>
         <button
           disabled={mutation.isPending || (0 < progress && progress < 100)}
-          className="bg-blue-800 text-white font-medium rounded-xl mt-4 p-2 w-36 disabled:bg-blue-400 disabled:cursor-not-allowed"
+          className="bg-brand-700 text-white font-medium rounded-xl mt-4 p-2 w-36 shadow-soft hover:bg-brand-800 disabled:bg-brand-300 disabled:cursor-not-allowed"
         >
           {mutation.isPending ? "Loading..." : "Send"}
         </button>
-        {"Progress:" + progress}
+        <span className="text-sm text-slate-500">{"Progress:" + progress}</span>
         {/* {mutation.isError && <span>{mutation.error.message}</span>} */}
       </form>
     </div>

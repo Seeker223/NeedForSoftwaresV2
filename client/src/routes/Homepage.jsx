@@ -7,24 +7,38 @@ const Homepage = () => {
   return (
     <div className="mt-4 flex flex-col gap-4">
       {/* BREADCRUMB */}
-      <div className="flex gap-4">
-        <Link to="/">Home</Link>
+      <div className="flex gap-4 text-sm text-slate-500">
+        <Link to="/" className="hover:text-brand-700 transition">Home</Link>
         <span>-</span>
-        <span className="text-blue-800">Blogs and Articles</span>
+        <span className="text-brand-700 font-medium">Blogs and Articles</span>
       </div>
       {/* INTRODUCTION */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-8">
         {/* titles */}
-        <div className="">
-          <h1 className="text-gray-800 text-2xl md:text-5xl lg:text-6xl font-bold">
+        <div className="max-w-2xl">
+          <h1 className="text-slate-900 text-3xl md:text-5xl lg:text-6xl font-bold leading-tight">
          {/* Welcome To NeedForSoftwares */}
          Startup NeedForSoftwares
           </h1>
-          <p className="mt-8 text-md md:text-xl">
+          <p className="mt-6 text-md md:text-xl text-slate-600">
             Building Industry Relevant Software Development Skills & Helping 
             You Land Your Dream Job. <br/><br/>Web development | Artificial intelligence | Social media platform | Block chain | Cryptocurrency| Fintech
             {/* We believe softwares are more needed in todays era */}
           </p>
+          <div className="mt-6 flex items-center gap-4">
+            <Link
+              to="/posts"
+              className="px-5 py-3 rounded-full bg-brand-700 text-white shadow-soft hover:bg-brand-800 transition"
+            >
+              Explore Posts
+            </Link>
+            <Link
+              to="/write"
+              className="px-5 py-3 rounded-full border border-brand-200 text-brand-800 hover:bg-brand-50 transition"
+            >
+              Write a Story
+            </Link>
+          </div>
         </div>
         {/* animated button */}
         <Link to="write" className="hidden md:block relative">
@@ -49,7 +63,7 @@ const Homepage = () => {
               </textPath>
             </text>
           </svg>
-          <button className="absolute top-0 left-0 right-0 bottom-0 m-auto w-20 h-20 bg-blue-800 rounded-full flex items-center justify-center">
+          <button className="absolute top-0 left-0 right-0 bottom-0 m-auto w-20 h-20 bg-brand-700 rounded-full flex items-center justify-center shadow-soft">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -71,7 +85,7 @@ const Homepage = () => {
       <FeaturedPosts />
       {/* POST LIST */}
       <div className="">
-        <h1 className="my-8 text-2xl text-gray-600">Recent Posts</h1>
+        <h1 className="my-8 text-2xl text-slate-700 font-semibold">Recent Posts</h1>
         <PostList/>
       </div>
     </div>

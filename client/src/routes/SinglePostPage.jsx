@@ -76,62 +76,62 @@ const SinglePostPage = () => {
       </Helmet>
       {/* detail */}
       <div className="flex gap-8">
-        <div className="lg:w-3/5 flex flex-col gap-8">
-          <h1 className="text-xl md:text-3xl xl:text-4xl 2xl:text-5xl font-semibold">
+        <div className="lg:w-3/5 flex flex-col gap-6">
+          <h1 className="text-2xl md:text-3xl xl:text-4xl 2xl:text-5xl font-semibold text-slate-900">
             {data.title}
           </h1>
-          <div className="flex items-center gap-2 text-gray-400 text-sm">
+          <div className="flex items-center gap-2 text-slate-500 text-sm">
             <span>Written by</span>
             <Link
-              className="text-blue-800"
+              className="text-brand-700"
               to={`/posts?author=${data.user.username}`}
             >
               {data.user.username}
             </Link>
             <span>on</span>
-            <Link className="text-blue-800" to={`/posts?cat=${data.category}`}>
+            <Link className="text-brand-700" to={`/posts?cat=${data.category}`}>
               {data.category}
             </Link>
             <span>{format(data.createdAt)}</span>
           </div>
-          <p className="text-gray-500 font-medium">{data.desc}</p>
+          <p className="text-slate-600 font-medium">{data.desc}</p>
         </div>
         {data.img && (
           <div className="hidden lg:block w-2/5">
-            <Image src={data.img} w="600" className="rounded-2xl" />
+            <Image src={data.img} w="600" className="rounded-3xl shadow-card" />
           </div>
         )}
       </div>
       {/* content */}
       <div className="flex flex-col md:flex-row gap-12 justify-between">
         {/* text */}
-        <div className="lg:text-lg flex flex-col gap-6 text-justify">
+        <div className="lg:text-lg flex flex-col gap-6 text-justify text-slate-700">
           <div
             className="prose max-w-none"
             dangerouslySetInnerHTML={{ __html: data.content }}
           />
         </div>
         {/* menu */}
-        <div className="px-4 h-max sticky top-8">
-          <h1 className="mb-4 text-sm font-medium">Author</h1>
+        <div className="px-4 h-max sticky top-8 bg-white/80 border border-slate-200/70 rounded-3xl p-4 shadow-card">
+          <h1 className="mb-4 text-sm font-semibold text-slate-700">Author</h1>
           <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-8">
+            <div className="flex items-center gap-4">
               {data.user.img && (
                 <Image
                   src={data.user.img}
-                  className="w-12 h-12 rounded-full object-cover"
+                  className="w-12 h-12 rounded-full object-cover ring-2 ring-brand-100"
                   w="48"
                   h="48"
                 />
               )}
               <Link
-                className="text-blue-800"
+                className="text-brand-700 font-medium"
                 to={`/posts?author=${data.user.username}`}
               >
                 {data.user.username}
               </Link>
             </div>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-slate-500">
               Lorem ipsum dolor sit amet consectetur
             </p>
             <div className="flex gap-2">
@@ -144,26 +144,26 @@ const SinglePostPage = () => {
             </div>
           </div>
           <PostMenuActions post={data}/>
-          <h1 className="mt-8 mb-4 text-sm font-medium">Categories</h1>
-          <div className="flex flex-col gap-2 text-sm">
-            <Link className="underline">All</Link>
-            <Link className="underline" to="/">
+          <h1 className="mt-8 mb-4 text-sm font-semibold text-slate-700">Categories</h1>
+          <div className="flex flex-col gap-2 text-sm text-slate-600">
+            <Link className="hover:text-brand-700 transition">All</Link>
+            <Link className="hover:text-brand-700 transition" to="/">
               Web Design
             </Link>
-            <Link className="underline" to="/">
+            <Link className="hover:text-brand-700 transition" to="/">
               Development
             </Link>
-            <Link className="underline" to="/">
+            <Link className="hover:text-brand-700 transition" to="/">
               Databases
             </Link>
-            <Link className="underline" to="/">
+            <Link className="hover:text-brand-700 transition" to="/">
               Search Engines
             </Link>
-            <Link className="underline" to="/">
+            <Link className="hover:text-brand-700 transition" to="/">
               Marketing
             </Link>
           </div>
-          <h1 className="mt-8 mb-4 text-sm font-medium">Search</h1>
+          <h1 className="mt-8 mb-4 text-sm font-semibold text-slate-700">Search</h1>
           <Search />
         </div>
       </div>

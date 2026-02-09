@@ -7,10 +7,10 @@ const PostListPage = () => {
 
   return (
     <div className="">
-      <h1 className="mb-8 text-2xl">Development Blog</h1>
+      <h1 className="mb-8 text-2xl font-semibold text-slate-800">Development Blog</h1>
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="bg-blue-800 text-sm text-white px-4 py-2 rounded-2xl mb-4 md:hidden"
+        className="bg-brand-700 text-sm text-white px-4 py-2 rounded-2xl mb-4 md:hidden shadow-soft"
       >
         {open ? "Close" : "Filter or Search"}
       </button>

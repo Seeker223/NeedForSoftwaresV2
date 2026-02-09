@@ -112,14 +112,14 @@ const PostMenuActions = ({ post }) => {
 
   return (
     <div className="">
-      <h1 className="mt-8 mb-4 text-sm font-medium">Actions</h1>
+      <h1 className="mt-8 mb-4 text-sm font-semibold text-slate-700">Actions</h1>
       {isPending ? (
         "Loading..."
       ) : error ? (
         "Saved post fetching failed!"
       ) : (
         <div
-          className="flex items-center gap-2 py-2 text-sm cursor-pointer"
+          className="flex items-center gap-2 py-2 text-sm cursor-pointer text-slate-700 hover:text-brand-700 transition"
           onClick={handleSave}
         >
           <svg
@@ -151,7 +151,7 @@ const PostMenuActions = ({ post }) => {
       )}
       {isAdmin && (
         <div
-          className="flex items-center gap-2 py-2 text-sm cursor-pointer"
+          className="flex items-center gap-2 py-2 text-sm cursor-pointer text-slate-700 hover:text-brand-700 transition"
           onClick={handleFeature}
         >
           <svg
@@ -183,7 +183,7 @@ const PostMenuActions = ({ post }) => {
       )}
       {user && (post.user.username === user.username || isAdmin) && (
         <div
-          className="flex items-center gap-2 py-2 text-sm cursor-pointer"
+          className="flex items-center gap-2 py-2 text-sm cursor-pointer text-slate-700 hover:text-red-600 transition"
           onClick={handleDelete}
         >
           <svg
