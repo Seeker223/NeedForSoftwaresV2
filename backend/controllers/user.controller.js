@@ -9,6 +9,10 @@ export const getUserSavedPosts = async (req, res) => {
 
   const user = await User.findOne({ clerkUserId });
 
+  if (!user) {
+    return res.status(404).json("User not found!");
+  }
+
   res.status(200).json(user.savedPosts);
 };
 
@@ -21,6 +25,10 @@ export const savePost = async (req, res) => {
   }
 
   const user = await User.findOne({ clerkUserId });
+
+  if (!user) {
+    return res.status(404).json("User not found!");
+  }
 
   const isSaved = user.savedPosts.some((p) => p === postId);
 

@@ -131,6 +131,10 @@ export const deletePost = async (req, res) => {
 
   const user = await User.findOne({ clerkUserId });
 
+  if (!user) {
+    return res.status(404).json("User not found!");
+  }
+
   const deletedPost = await Post.findOneAndDelete({
     _id: req.params.id,
     user: user._id,

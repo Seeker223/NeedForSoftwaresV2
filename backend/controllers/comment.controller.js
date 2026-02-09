@@ -19,6 +19,10 @@ export const addComment = async (req, res) => {
 
   const user = await User.findOne({ clerkUserId });
 
+  if (!user) {
+    return res.status(404).json("User not found!");
+  }
+
   const newComment = new Comment({
     ...req.body,
     user: user._id,
@@ -46,6 +50,10 @@ export const deleteComment = async (req, res) => {
   }
 
   const user = await User.findOne({ clerkUserId });
+
+  if (!user) {
+    return res.status(404).json("User not found!");
+  }
 
   const deletedComment = await Comment.findOneAndDelete({
     _id: id,

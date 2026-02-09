@@ -12,7 +12,7 @@ const fetchComments = async (postId) => {
 };
 
 const Comments = ({ postId }) => {
-  const { user } = useUser();
+  const { user, isSignedIn } = useUser();
   const { getToken } = useAuth();
 
   const { isPending, error, data } = useQuery({
@@ -45,6 +45,10 @@ const Comments = ({ postId }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!isSignedIn) {
+      toast.info("Please login to comment.");
+      return;
+    }
     const formData = new FormData(e.target);
 
     const data = {
@@ -65,8 +69,12 @@ const Comments = ({ postId }) => {
           name="desc"
           placeholder="Write a comment..."
           className="w-full p-4 rounded-xl"
+          disabled={!isSignedIn}
         />
-        <button className="bg-blue-800 px-4 py-3 text-white font-medium rounded-xl">
+        <button
+          className="bg-blue-800 px-4 py-3 text-white font-medium rounded-xl disabled:bg-blue-400 disabled:cursor-not-allowed"
+          disabled={!isSignedIn}
+        >
           Send
         </button>
       </form>
@@ -76,7 +84,7 @@ const Comments = ({ postId }) => {
         "Error loading comments!"
       ) : (
         <>
-          {mutation.isPending && (
+          {mutation.isPending && user && (
             <Comment
               comment={{
                 desc: `${mutation.variables.desc} (Sending...)`,

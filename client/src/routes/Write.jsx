@@ -17,7 +17,7 @@ const Write = () => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    img && setValue((prev) => prev + `<p><image src="${img.url}"/></p>`);
+    img && setValue((prev) => prev + `<p><img src="${img.url}"/></p>`);
   }, [img]);
 
   useEffect(() => {

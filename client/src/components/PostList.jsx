@@ -34,11 +34,7 @@ const PostList = () => {
       lastPage.hasMore ? pages.length + 1 : undefined,
   });
 
-  // if (status === "loading") return "Loading...";
-  if (isFetching) return "Loading...";
-  
-
-  // if (status === "error") return "Something went wrong!";
+  if (status === "loading") return "Loading...";
   if (error) return "Something went wrong!";
 
   const allPosts = data?.pages?.flatMap((page) => page.posts) || [];

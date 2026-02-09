@@ -12,9 +12,15 @@ import cors from "cors";
 
 const app = express();
 
+const rawOrigins = process.env.CLIENT_URL || "";
+const allowedOrigins = rawOrigins
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: allowedOrigins.length ? allowedOrigins : true,
     credentials: true,
   })
 );
@@ -57,7 +63,9 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.listen(3000, () => {
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
   connectDB();
-  console.log("Server is running!");
+  console.log(`Server is running on port ${PORT}!`);
 });

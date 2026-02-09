@@ -38,7 +38,12 @@ const FeaturedPosts = () => {
         {/* details */}
         <div className="flex items-center gap-4">
           <h1 className="font-semibold lg:text-lg">01.</h1>
-          <Link className="text-blue-800 lg:text-lg">{posts[0].category}</Link>
+          <Link
+            className="text-blue-800 lg:text-lg"
+            to={`/posts?cat=${posts[0].category}`}
+          >
+            {posts[0].category}
+          </Link>
           <span className="text-gray-500">{format(posts[0].createdAt)}</span>
         </div>
         {/* title */}
@@ -65,7 +70,12 @@ const FeaturedPosts = () => {
             {/* details */}
             <div className="flex items-center gap-4 text-sm lg:text-base mb-4">
               <h1 className="font-semibold">02.</h1>
-              <Link className="text-blue-800">{posts[1].category}</Link>
+              <Link
+                className="text-blue-800"
+                to={`/posts?cat=${posts[1].category}`}
+              >
+                {posts[1].category}
+              </Link>
               <span className="text-gray-500 text-sm">{format(posts[1].createdAt)}</span>
             </div>
             {/* title */}
@@ -91,12 +101,17 @@ const FeaturedPosts = () => {
             {/* details */}
             <div className="flex items-center gap-4 text-sm lg:text-base mb-4">
               <h1 className="font-semibold">02.</h1>
-              <Link className="text-blue-800">{posts[2].category}</Link>
+              <Link
+                className="text-blue-800"
+                to={`/posts?cat=${posts[2].category}`}
+              >
+                {posts[2].category}
+              </Link>
               <span className="text-gray-500 text-sm">{format(posts[2].createdAt)}</span>
             </div>
             {/* title */}
             <Link
-              to={posts[1].slug}
+              to={posts[2].slug}
               className="text-base sm:text-lg md:text-2xl lg:text-xl xl:text-2xl font-medium"
             >
               {posts[2].title}
@@ -117,7 +132,12 @@ const FeaturedPosts = () => {
             {/* details */}
             <div className="flex items-center gap-4 text-sm lg:text-base mb-4">
               <h1 className="font-semibold">02.</h1>
-              <Link className="text-blue-800">{posts[3].category}</Link>
+              <Link
+                className="text-blue-800"
+                to={`/posts?cat=${posts[3].category}`}
+              >
+                {posts[3].category}
+              </Link>
               <span className="text-gray-500 text-sm">{format(posts[3].createdAt)}</span>
             </div>
             {/* title */}

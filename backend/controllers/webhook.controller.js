@@ -30,7 +30,7 @@ export const clerkWebHook = async (req, res) => {
       clerkUserId: evt.data.id,
       username: evt.data.username || evt.data.email_addresses[0].email_address,
       email: evt.data.email_addresses[0].email_address,
-      img: evt.data.profile_img_url,
+      img: evt.data.image_url || evt.data.profile_image_url || null,
     });
 
     await newUser.save();
@@ -41,8 +41,10 @@ export const clerkWebHook = async (req, res) => {
       clerkUserId: evt.data.id,
     });
 
-    await Post.deleteMany({user:deletedUser._id})
-    await Comment.deleteMany({user:deletedUser._id})
+    if (deletedUser) {
+      await Post.deleteMany({ user: deletedUser._id });
+      await Comment.deleteMany({ user: deletedUser._id });
+    }
   }
 
   return res.status(200).json({
