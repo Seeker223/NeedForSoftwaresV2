@@ -66,6 +66,11 @@ const Write = () => {
       content: value,
     };
 
+    if (!data.title || !data.title.trim()) {
+      toast.error("Title is required.");
+      return;
+    }
+
     console.log(data);
 
     mutation.mutate(data);
@@ -85,6 +90,7 @@ const Write = () => {
           type="text"
           placeholder="My Awesome Story"
           name="title"
+          required
         />
         <div className="flex items-center gap-4">
           <label htmlFor="" className="text-sm">

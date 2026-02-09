@@ -92,6 +92,10 @@ export const createPost = async (req, res) => {
     return res.status(401).json("Not authenticated!");
   }
 
+  if (!req.body.title || !req.body.title.trim()) {
+    return res.status(400).json("Title is required!");
+  }
+
   const user = await ensureUser(clerkUserId);
 
   if (!user) {
