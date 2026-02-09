@@ -26,10 +26,18 @@ export const clerkWebHook = async (req, res) => {
   // console.log(evt.data);
 
   if (evt.type === "user.created") {
+    const primaryEmail =
+      evt.data.email_addresses?.find(
+        (e) => e.id === evt.data.primary_email_address_id
+      )?.email_address || null;
+
     const newUser = new User({
       clerkUserId: evt.data.id,
-      username: evt.data.username || evt.data.email_addresses[0].email_address,
-      email: evt.data.email_addresses[0].email_address,
+      username:
+        evt.data.username ||
+        primaryEmail ||
+        evt.data.id,
+      email: primaryEmail || "unknown@example.com",
       img: evt.data.image_url || evt.data.profile_image_url || null,
     });
 
