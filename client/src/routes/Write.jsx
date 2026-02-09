@@ -111,10 +111,10 @@ const Write = () => {
         <div className="flex flex-1 ">
           <div className="flex flex-col gap-2 mr-2">
             <Upload type="image" setProgress={setProgress} setData={setImg}>
-              🌆
+              Image
             </Upload>
             <Upload type="video" setProgress={setProgress} setData={setVideo}>
-              ▶️
+              Video
             </Upload>
           </div>
           <ReactQuill
@@ -139,3 +139,4 @@ const Write = () => {
 };
 
 export default Write;
+

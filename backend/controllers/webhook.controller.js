@@ -18,7 +18,7 @@ export const clerkWebHook = async (req, res) => {
   try {
     evt = wh.verify(payload, headers);
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "Webhook verification failed!",
     });
   }

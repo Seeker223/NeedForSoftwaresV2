@@ -23,6 +23,7 @@ const PostMenuActions = ({ post }) => {
         },
       });
     },
+    enabled: !!user,
   });
 
   const isAdmin = user?.publicMetadata?.role === "admin" || false;

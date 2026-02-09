@@ -9,7 +9,7 @@ const Homepage = () => {
       {/* BREADCRUMB */}
       <div className="flex gap-4">
         <Link to="/">Home</Link>
-        <span>•</span>
+        <span>-</span>
         <span className="text-blue-800">Blogs and Articles</span>
       </div>
       {/* INTRODUCTION */}
@@ -42,10 +42,10 @@ const Homepage = () => {
             />
             <text>
               <textPath href="#circlePath" startOffset="0%">
-                Write your story •
+                Write your story -
               </textPath>
               <textPath href="#circlePath" startOffset="50%">
-                Share your idea •
+                Share your idea -
               </textPath>
             </text>
           </svg>
@@ -79,3 +79,4 @@ const Homepage = () => {
 };
 
 export default Homepage;
+
