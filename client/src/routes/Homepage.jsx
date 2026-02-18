@@ -2,12 +2,13 @@ import { Link } from "react-router-dom";
 import MainCategories from "../components/MainCategories";
 import FeaturedPosts from "../components/FeaturedPosts";
 import PostList from "../components/PostList";
+import HeroCarousel from "../components/HeroCarousel";
 
 const Homepage = () => {
   return (
     <div className="mt-4 flex flex-col gap-4">
       {/* BREADCRUMB */}
-      <div className="flex gap-4 text-sm text-slate-500">
+      <div className="flex gap-4 text-sm text-slate-500 dark:text-slate-400">
         <Link to="/" className="hover:text-brand-700 transition">Home</Link>
         <span>-</span>
         <span className="text-brand-700 font-medium">Blogs and Articles</span>
@@ -16,16 +17,16 @@ const Homepage = () => {
       <div className="flex items-center justify-between gap-8">
         {/* titles */}
         <div className="max-w-2xl">
-          <h1 className="text-slate-900 text-3xl md:text-5xl lg:text-6xl font-bold leading-tight">
+          <h1 className="text-slate-900 dark:text-slate-100 text-3xl md:text-5xl lg:text-6xl font-bold leading-tight">
          {/* Welcome To NeedForSoftwares */}
          Startup NeedForSoftwares
           </h1>
-          <p className="mt-6 text-md md:text-xl text-slate-600">
+          <p className="mt-6 text-md md:text-xl text-slate-600 dark:text-slate-300">
             Building Industry Relevant Software Development Skills & Helping 
             You Land Your Dream Job. <br/><br/>Web development | Artificial intelligence | Social media platform | Block chain | Cryptocurrency| Fintech
             {/* We believe softwares are more needed in todays era */}
           </p>
-          <div className="mt-6 flex items-center gap-4">
+          <div className="mt-6 flex flex-wrap items-center gap-3">
             <Link
               to="/posts"
               className="px-5 py-3 rounded-full bg-brand-700 text-white shadow-soft hover:bg-brand-800 transition"
@@ -34,14 +35,14 @@ const Homepage = () => {
             </Link>
             <Link
               to="/write"
-              className="px-5 py-3 rounded-full border border-brand-200 text-brand-800 hover:bg-brand-50 transition"
+              className="px-5 py-3 rounded-full border border-brand-200 dark:border-slate-700 text-brand-800 dark:text-brand-200 hover:bg-brand-50 dark:hover:bg-slate-800 transition"
             >
               Write a Story
             </Link>
           </div>
         </div>
         {/* animated button */}
-        <Link to="write" className="hidden md:block relative">
+        <Link to="/write" className="hidden md:block relative">
           <svg
             viewBox="0 0 200 200"
             width="200"
@@ -79,13 +80,14 @@ const Homepage = () => {
           </button>
         </Link>
       </div>
+      <HeroCarousel />
       {/* CATEGORIES */}
       <MainCategories />
       {/* FEATURED POSTS */}
       <FeaturedPosts />
       {/* POST LIST */}
       <div className="">
-        <h1 className="my-8 text-2xl text-slate-700 font-semibold">Recent Posts</h1>
+        <h1 className="my-8 text-2xl text-slate-700 dark:text-slate-200 font-semibold">Recent Posts</h1>
         <PostList/>
       </div>
     </div>

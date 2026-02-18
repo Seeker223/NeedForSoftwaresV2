@@ -47,11 +47,11 @@ const Write = () => {
   });
 
   if (!isLoaded) {
-    return <div className="">Loading...</div>;
+    return <div className="text-slate-600 dark:text-slate-300">Loading...</div>;
   }
 
   if (isLoaded && !isSignedIn) {
-    return <div className="">You should login!</div>;
+    return <div className="text-slate-600 dark:text-slate-300">You should login!</div>;
   }
 
   const handleSubmit = (e) => {
@@ -78,28 +78,28 @@ const Write = () => {
 
   return (
     <div className="h-[calc(100vh-64px)] md:h-[calc(100vh-80px)] flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold text-slate-800">Create a New Post</h1>
+      <h1 className="text-2xl font-semibold text-slate-800 dark:text-slate-100">Create a New Post</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-6 flex-1 mb-6">
         <Upload type="image" setProgress={setProgress} setData={setCover}>
-          <button className="w-max p-2 shadow-card rounded-xl text-sm text-slate-600 bg-white/80 border border-slate-200/70 hover:bg-brand-50 transition">
+          <button className="w-max p-2 shadow-card rounded-xl text-sm text-slate-600 dark:text-slate-200 bg-white/80 dark:bg-slate-900/70 border border-slate-200/70 dark:border-slate-800 hover:bg-brand-50 dark:hover:bg-slate-800 transition">
             Add a cover image
           </button>
         </Upload>
         <input
-          className="text-3xl md:text-4xl font-semibold bg-transparent outline-none text-slate-900"
+          className="text-3xl md:text-4xl font-semibold bg-transparent outline-none text-slate-900 dark:text-slate-100"
           type="text"
           placeholder="My Awesome Story"
           name="title"
           required
         />
         <div className="flex items-center gap-4">
-          <label htmlFor="" className="text-sm">
+            <label htmlFor="" className="text-sm text-slate-700 dark:text-slate-300">
             Choose a category:
           </label>
           <select
             name="category"
             id=""
-            className="p-2 rounded-xl bg-white/80 border border-slate-200/70 shadow-card"
+            className="p-2 rounded-xl bg-white/80 dark:bg-slate-900/70 border border-slate-200/70 dark:border-slate-800 shadow-card"
           >
             <option value="general">General</option>
             <option value="web-design">Web Design</option>
@@ -110,26 +110,26 @@ const Write = () => {
           </select>
         </div>
         <textarea
-          className="p-4 rounded-xl bg-white/80 border border-slate-200/70 shadow-card"
+          className="p-4 rounded-xl bg-white/80 dark:bg-slate-900/70 border border-slate-200/70 dark:border-slate-800 shadow-card text-slate-800 dark:text-slate-100"
           name="desc"
           placeholder="A Short Description"
         />
         <div className="flex flex-1 ">
           <div className="flex flex-col gap-2 mr-2">
             <Upload type="image" setProgress={setProgress} setData={setImg}>
-              <span className="px-3 py-2 text-sm rounded-xl bg-white/80 border border-slate-200/70 shadow-card hover:bg-brand-50 transition">
+              <span className="px-3 py-2 text-sm rounded-xl bg-white/80 dark:bg-slate-900/70 border border-slate-200/70 dark:border-slate-800 shadow-card hover:bg-brand-50 dark:hover:bg-slate-800 transition">
                 Image
               </span>
             </Upload>
             <Upload type="video" setProgress={setProgress} setData={setVideo}>
-              <span className="px-3 py-2 text-sm rounded-xl bg-white/80 border border-slate-200/70 shadow-card hover:bg-brand-50 transition">
+              <span className="px-3 py-2 text-sm rounded-xl bg-white/80 dark:bg-slate-900/70 border border-slate-200/70 dark:border-slate-800 shadow-card hover:bg-brand-50 dark:hover:bg-slate-800 transition">
                 Video
               </span>
             </Upload>
           </div>
           <ReactQuill
             theme="snow"
-            className="flex-1 rounded-xl bg-white/80 border border-slate-200/70 shadow-card"
+            className="flex-1 rounded-xl bg-white/80 dark:bg-slate-900/70 border border-slate-200/70 dark:border-slate-800 shadow-card"
             value={value}
             onChange={setValue}
             readOnly={0 < progress && progress < 100}
@@ -137,11 +137,11 @@ const Write = () => {
         </div>
         <button
           disabled={mutation.isPending || (0 < progress && progress < 100)}
-          className="bg-brand-700 text-white font-medium rounded-xl mt-4 p-2 w-36 shadow-soft hover:bg-brand-800 disabled:bg-brand-300 disabled:cursor-not-allowed"
+          className="bg-brand-700 text-white font-medium rounded-xl mt-4 p-3 w-full sm:w-44 sm:self-start shadow-soft hover:bg-brand-800 disabled:bg-brand-300 disabled:cursor-not-allowed"
         >
           {mutation.isPending ? "Loading..." : "Send"}
         </button>
-        <span className="text-sm text-slate-500">{"Progress:" + progress}</span>
+        <span className="text-sm text-slate-500 dark:text-slate-400">{"Progress:" + progress}</span>
         {/* {mutation.isError && <span>{mutation.error.message}</span>} */}
       </form>
     </div>

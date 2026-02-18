@@ -5,7 +5,7 @@ import { format } from "timeago.js";
 const PostListItem = ({ post }) => {
 
   return (
-    <div className="flex flex-col xl:flex-row gap-8 mb-12 bg-white/80 border border-slate-200/70 rounded-3xl p-5 shadow-card">
+    <div className="flex flex-col xl:flex-row gap-8 mb-12 bg-white/80 dark:bg-slate-900/70 border border-slate-200/70 dark:border-slate-800 rounded-3xl p-5 shadow-card">
       {/* image */}
       {post.img && (
         <div className="md:hidden xl:block xl:w-1/3">
@@ -14,10 +14,10 @@ const PostListItem = ({ post }) => {
       )}
       {/* details */}
       <div className="flex flex-col gap-4 xl:w-2/3">
-        <Link to={`/${post.slug}`} className="text-2xl md:text-3xl font-semibold text-slate-900 hover:text-brand-700 transition">
+        <Link to={`/${post.slug}`} className="text-2xl md:text-3xl font-semibold text-slate-900 dark:text-slate-100 hover:text-brand-700 transition">
           {post.title}
         </Link>
-        <div className="flex items-center gap-2 text-slate-500 text-sm">
+        <div className="flex flex-wrap items-center gap-2 text-slate-500 dark:text-slate-400 text-sm">
           <span>Written by</span>
           <Link className="text-brand-700" to={`/posts?author=${post.user.username}`}>{post.user.username}</Link>
           <span>on</span>
@@ -26,7 +26,7 @@ const PostListItem = ({ post }) => {
           </Link>
           <span>{format(post.createdAt)}</span>
         </div>
-        <p className="text-slate-600">{post.desc}</p>
+        <p className="text-slate-600 dark:text-slate-300">{post.desc}</p>
         <Link to={`/${post.slug}`} className="text-brand-700 text-sm font-medium hover:text-brand-800 transition">
           Read More
         </Link>

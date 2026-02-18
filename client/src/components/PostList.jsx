@@ -1,8 +1,9 @@
 import PostListItem from "./PostListItem";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSearchParams } from "react-router-dom";
+import TextSkeleton from "./TextSkeleton";
 
 const fetchPosts = async (pageParam, searchParams) => {
   const searchParamsObj = Object.fromEntries([...searchParams]);
@@ -34,7 +35,17 @@ const PostList = () => {
       lastPage.hasMore ? pages.length + 1 : undefined,
   });
 
-  if (status === "loading") return "Loading...";
+  if (status === "loading") {
+    return (
+      <div className="space-y-6">
+        {Array.from({ length: 3 }).map((_, idx) => (
+          <div key={idx} className="rounded-3xl border border-slate-200/70 dark:border-slate-800 p-5">
+            <TextSkeleton lines={4} />
+          </div>
+        ))}
+      </div>
+    );
+  }
   if (error) return "Something went wrong!";
 
   const allPosts = data?.pages?.flatMap((page) => page.posts) || [];
@@ -44,9 +55,13 @@ const PostList = () => {
       dataLength={allPosts.length}
       next={fetchNextPage}
       hasMore={!!hasNextPage}
-      loader={<h4>Loading more posts...</h4>}
+      loader={
+        <div className="py-4">
+          <TextSkeleton lines={2} />
+        </div>
+      }
       endMessage={
-        <p>
+        <p className="text-slate-500 dark:text-slate-400 py-3">
           <b>All posts loaded!</b>
         </p>
       }

@@ -3,6 +3,7 @@ import Comment from "./Comment";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { toast } from "react-toastify";
+import TextSkeleton from "./TextSkeleton";
 
 const fetchComments = async (postId) => {
   const res = await axios.get(
@@ -37,6 +38,7 @@ const Comments = ({ postId }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", postId] });
+      toast.success("Comment posted");
     },
     onError: (error) => {
       toast.error(error.response.data);
@@ -60,15 +62,15 @@ const Comments = ({ postId }) => {
 
   return (
     <div className="flex flex-col gap-8 lg:w-3/5 mb-12">
-      <h1 className="text-xl text-slate-700 font-semibold">Comments</h1>
+      <h1 className="text-xl text-slate-700 dark:text-slate-200 font-semibold">Comments</h1>
       <form
         onSubmit={handleSubmit}
-        className="flex items-center justify-between gap-8 w-full bg-white/80 border border-slate-200/70 rounded-3xl p-4 shadow-card"
+        className="flex items-center justify-between gap-8 w-full bg-white/80 dark:bg-slate-900/70 border border-slate-200/70 dark:border-slate-800 rounded-3xl p-4 shadow-card"
       >
         <textarea
           name="desc"
           placeholder="Write a comment..."
-          className="w-full p-3 rounded-2xl bg-transparent outline-none text-slate-700 placeholder:text-slate-400"
+          className="w-full p-3 rounded-2xl bg-transparent outline-none text-slate-700 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500"
           disabled={!isSignedIn}
         />
         <button
@@ -79,7 +81,9 @@ const Comments = ({ postId }) => {
         </button>
       </form>
       {isPending ? (
-        "Loading..."
+        <div className="w-full rounded-3xl border border-slate-200/70 dark:border-slate-800 p-4">
+          <TextSkeleton lines={4} />
+        </div>
       ) : error ? (
         "Error loading comments!"
       ) : (

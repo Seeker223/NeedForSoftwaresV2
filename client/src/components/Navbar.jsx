@@ -1,82 +1,155 @@
-import { useState } from "react";
-import Image from "./Image";
-import { Link } from "react-router-dom";
-import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  SignedIn,
+  SignedOut,
+  SignOutButton,
+  UserButton,
+  useUser,
+} from "@clerk/clerk-react";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const { user } = useUser();
+
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname, location.search]);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   return (
-    <div className="w-full h-16 md:h-20 flex items-center justify-between sticky top-0 z-40 backdrop-blur-md bg-white/70 border-b border-slate-200/60">
-      {/* LOGO */}
-      <Link to="/" className="flex items-center gap-3 text-xl md:text-2xl font-bold tracking-tight">
-        <Image src="logo.png" alt="NeedForSoftwares Logo" w={32} h={32} />
-        <span className="text-slate-900">NeedForSoftwares</span>
+    <header className="w-full h-16 md:h-20 flex items-center justify-between sticky top-0 z-40 backdrop-blur-md bg-white/75 dark:bg-slate-950/70 border-b border-slate-200/60 dark:border-slate-800">
+      <Link to="/" className="flex items-center gap-3 text-lg md:text-xl font-bold tracking-tight">
+        <img src="/logo.png" alt="NeedForSoftwares Logo" className="w-8 h-8 rounded-lg" />
+        <span className="text-slate-900 dark:text-slate-100">NeedForSoftwares</span>
       </Link>
-      {/* MOBILE MENU */}
-      <div className="md:hidden">
-        {/* MOBILE BUTTON */}
-        <div
-          className="cursor-pointer text-4xl"
-          onClick={() => setOpen((prev) => !prev)}
-        >
-          {/* Change Hamburger Icon */}
-          {/* {open ? "X" : "☰"} */}
-          <div className="flex flex-col gap-[5.4px]">
-            <div
-              className={`h-[3px] rounded-md w-6 bg-black origin-left transition-all ease-in-out ${
-                open && "rotate-45"
-              }`}
-            ></div>
-            <div
-              className={`h-[3px] rounded-md w-6 bg-black transition-all ease-in-out ${
-                open && "opacity-0"
-              }`}
-            ></div>
-            <div
-              className={`h-[3px] rounded-md w-6 bg-black origin-left transition-all ease-in-out ${
-                open && "-rotate-45"
-              }`}
-            ></div>
-          </div>
-        </div>
-        {/* MOBILE LINK LIST */}
-        <div
-          className={`w-full h-screen bg-gradient-to-b from-white to-brand-50 flex flex-col items-center justify-center gap-8 font-medium text-lg absolute top-16 transition-all ease-in-out ${
-            open ? "-right-0" : "-right-[100%]"
-          }`}
-        >
-          <Link to="/" onClick={()=>setOpen(false)}>Home</Link>
-          <Link to="/posts?sort=trending" onClick={()=>setOpen(false)}>Trending</Link>
-          <Link to="/posts?sort=popular" onClick={()=>setOpen(false)}>Most Popular</Link>
-          <Link to="/" onClick={()=>setOpen(false)}>About</Link>
-          <Link to="/login" onClick={()=>setOpen(false)}>
-            <button className="py-2 px-4 rounded-3xl bg-brand-700 text-white shadow-soft hover:bg-brand-800 transition">
-              Login
-            </button>
+
+      <div className="hidden md:flex items-center gap-5 xl:gap-7 text-sm font-medium text-slate-700 dark:text-slate-200">
+        <Link to="/" className="hover:text-brand-700 transition">
+          Home
+        </Link>
+        <Link to="/posts?sort=trending" className="hover:text-brand-700 transition">
+          Trending
+        </Link>
+        <Link to="/posts?sort=popular" className="hover:text-brand-700 transition">
+          Most Popular
+        </Link>
+        <SignedIn>
+          <Link
+            to="/write"
+            className="px-4 py-2 rounded-full bg-brand-700 text-white shadow-soft hover:bg-brand-800 transition"
+          >
+            Write Post
           </Link>
-        </div>
-      </div>
-      {/* DESKTOP MENU */}
-      <div className="hidden md:flex items-center gap-8 xl:gap-10 font-medium text-slate-700">
-        <Link to="/" className="hover:text-brand-700 transition">Home</Link>
-        <Link to="/posts?sort=trending" className="hover:text-brand-700 transition">Trending</Link>
-        <Link to="/posts?sort=popular" className="hover:text-brand-700 transition">Most Popular</Link>
-        <Link to="/" className="hover:text-brand-700 transition">About</Link>
+        </SignedIn>
+        <ThemeToggle />
         <SignedOut>
-          <Link to="/login">
-            <button className="py-2 px-4 rounded-3xl bg-brand-700 text-white shadow-soft hover:bg-brand-800 transition">
-              Login
-            </button>
+          <Link
+            to="/login"
+            className="py-2 px-4 rounded-full border border-brand-200 dark:border-slate-700 text-brand-800 dark:text-brand-200 hover:bg-brand-50 dark:hover:bg-slate-800 transition"
+          >
+            Login
           </Link>
         </SignedOut>
         <SignedIn>
-          <UserButton />
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-slate-500 dark:text-slate-400 max-w-28 truncate">
+              {user?.username || user?.primaryEmailAddress?.emailAddress}
+            </span>
+            <UserButton />
+            <SignOutButton>
+              <button className="text-xs px-3 py-1.5 rounded-full border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                Sign out
+              </button>
+            </SignOutButton>
+          </div>
         </SignedIn>
       </div>
-    </div>
+
+      <button
+        className="md:hidden h-10 w-10 rounded-lg border border-slate-300 dark:border-slate-700 flex items-center justify-center"
+        onClick={() => setOpen((prev) => !prev)}
+        aria-label="Toggle menu"
+        type="button"
+      >
+        <div className="flex flex-col gap-1.5">
+          <span
+            className={`h-0.5 w-5 bg-slate-900 dark:bg-slate-100 transition-transform ${
+              open ? "translate-y-2 rotate-45" : ""
+            }`}
+          />
+          <span
+            className={`h-0.5 w-5 bg-slate-900 dark:bg-slate-100 transition-opacity ${
+              open ? "opacity-0" : "opacity-100"
+            }`}
+          />
+          <span
+            className={`h-0.5 w-5 bg-slate-900 dark:bg-slate-100 transition-transform ${
+              open ? "-translate-y-2 -rotate-45" : ""
+            }`}
+          />
+        </div>
+      </button>
+
+      <div
+        className={`md:hidden fixed left-0 right-0 top-16 bottom-0 z-50 transition-transform duration-300 ${
+          open ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="h-full bg-white dark:bg-slate-950 p-6 flex flex-col justify-between">
+          <nav className="flex flex-col gap-5 text-lg font-medium text-slate-800 dark:text-slate-100">
+            <Link to="/">Home</Link>
+            <Link to="/posts?sort=trending">Trending</Link>
+            <Link to="/posts?sort=popular">Most Popular</Link>
+            <SignedIn>
+              <Link to="/write">Write Post</Link>
+            </SignedIn>
+          </nav>
+
+          <div className="border-t border-slate-200 dark:border-slate-800 pt-5 space-y-4">
+            <SignedIn>
+              <div className="flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Signed in as</p>
+                  <p className="text-sm font-medium text-slate-800 dark:text-slate-100 truncate">
+                    {user?.username || user?.primaryEmailAddress?.emailAddress}
+                  </p>
+                </div>
+                <UserButton />
+              </div>
+              <SignOutButton>
+                <button
+                  className="w-full rounded-xl px-4 py-3 border border-slate-300 dark:border-slate-700 text-sm"
+                  type="button"
+                >
+                  Sign out
+                </button>
+              </SignOutButton>
+            </SignedIn>
+            <SignedOut>
+              <Link
+                to="/login"
+                className="block text-center rounded-xl px-4 py-3 bg-brand-700 text-white"
+              >
+                Login
+              </Link>
+            </SignedOut>
+            <div className="flex justify-end">
+              <ThemeToggle />
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
   );
 };
 
 export default Navbar;
-

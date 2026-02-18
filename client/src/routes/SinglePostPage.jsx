@@ -77,10 +77,10 @@ const SinglePostPage = () => {
       {/* detail */}
       <div className="flex gap-8">
         <div className="lg:w-3/5 flex flex-col gap-6">
-          <h1 className="text-2xl md:text-3xl xl:text-4xl 2xl:text-5xl font-semibold text-slate-900">
+          <h1 className="text-2xl md:text-3xl xl:text-4xl 2xl:text-5xl font-semibold text-slate-900 dark:text-slate-100">
             {data.title}
           </h1>
-          <div className="flex items-center gap-2 text-slate-500 text-sm">
+          <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm">
             <span>Written by</span>
             <Link
               className="text-brand-700"
@@ -94,7 +94,7 @@ const SinglePostPage = () => {
             </Link>
             <span>{format(data.createdAt)}</span>
           </div>
-          <p className="text-slate-600 font-medium">{data.desc}</p>
+          <p className="text-slate-600 dark:text-slate-300 font-medium">{data.desc}</p>
         </div>
         {data.img && (
           <div className="hidden lg:block w-2/5">
@@ -105,15 +105,15 @@ const SinglePostPage = () => {
       {/* content */}
       <div className="flex flex-col md:flex-row gap-12 justify-between">
         {/* text */}
-        <div className="lg:text-lg flex flex-col gap-6 text-justify text-slate-700">
+        <div className="lg:text-lg flex flex-col gap-6 text-justify text-slate-700 dark:text-slate-300">
           <div
             className="prose max-w-none"
             dangerouslySetInnerHTML={{ __html: data.content }}
           />
         </div>
         {/* menu */}
-        <div className="px-4 h-max sticky top-8 bg-white/80 border border-slate-200/70 rounded-3xl p-4 shadow-card">
-          <h1 className="mb-4 text-sm font-semibold text-slate-700">Author</h1>
+        <div className="px-4 h-max sticky top-8 bg-white/80 dark:bg-slate-900/70 border border-slate-200/70 dark:border-slate-800 rounded-3xl p-4 shadow-card">
+          <h1 className="mb-4 text-sm font-semibold text-slate-700 dark:text-slate-200">Author</h1>
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-4">
               {data.user.img && (
@@ -131,21 +131,21 @@ const SinglePostPage = () => {
                 {data.user.username}
               </Link>
             </div>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               Lorem ipsum dolor sit amet consectetur
             </p>
             <div className="flex gap-2">
               <Link>
-                <Image src="facebook.svg" />
+                <img src="/facebook.svg" alt="Facebook" className="w-5 h-5" />
               </Link>
               <Link>
-                <Image src="instagram.svg" />
+                <img src="/instagram.svg" alt="Instagram" className="w-5 h-5" />
               </Link>
             </div>
           </div>
           <PostMenuActions post={data}/>
-          <h1 className="mt-8 mb-4 text-sm font-semibold text-slate-700">Categories</h1>
-          <div className="flex flex-col gap-2 text-sm text-slate-600">
+          <h1 className="mt-8 mb-4 text-sm font-semibold text-slate-700 dark:text-slate-200">Categories</h1>
+          <div className="flex flex-col gap-2 text-sm text-slate-600 dark:text-slate-300">
             <Link className="hover:text-brand-700 transition">All</Link>
             <Link className="hover:text-brand-700 transition" to="/">
               Web Design
@@ -163,7 +163,7 @@ const SinglePostPage = () => {
               Marketing
             </Link>
           </div>
-          <h1 className="mt-8 mb-4 text-sm font-semibold text-slate-700">Search</h1>
+          <h1 className="mt-8 mb-4 text-sm font-semibold text-slate-700 dark:text-slate-200">Search</h1>
           <Search />
         </div>
       </div>

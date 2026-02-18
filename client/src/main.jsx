@@ -61,7 +61,12 @@ createRoot(document.getElementById("root")).render(
       <HelmetProvider>
         <QueryClientProvider client={queryClient}>
           <RouterProvider router={router} />
-          <ToastContainer position="bottom-right" />
+          <ToastContainer
+            position="bottom-right"
+            autoClose={2800}
+            newestOnTop
+            pauseOnFocusLoss={false}
+          />
         </QueryClientProvider>
       </HelmetProvider>
     </ClerkProvider>

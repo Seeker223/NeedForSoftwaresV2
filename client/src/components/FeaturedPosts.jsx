@@ -3,6 +3,7 @@ import Image from "./Image";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "timeago.js";
+import TextSkeleton from "./TextSkeleton";
 
 const fetchPost = async () => {
   const res = await axios.get(
@@ -17,7 +18,13 @@ const FeaturedPosts = () => {
     queryFn: () => fetchPost(),
   });
 
-  if (isPending) return "loading...";
+  if (isPending) {
+    return (
+      <div className="mt-8 rounded-3xl border border-slate-200/70 dark:border-slate-800 p-5">
+        <TextSkeleton lines={5} />
+      </div>
+    );
+  }
   if (error) return "Something went wrong!" + error.message;
 
   const posts = data.posts;
@@ -28,7 +35,7 @@ const FeaturedPosts = () => {
   return (
     <div className="mt-8 flex flex-col lg:flex-row gap-8">
       {/* First */}
-      <div className="w-full lg:w-1/2 flex flex-col gap-4 bg-white/80 border border-slate-200/70 rounded-3xl p-5 shadow-card">
+      <div className="w-full lg:w-1/2 flex flex-col gap-4 bg-white/80 dark:bg-slate-900/70 border border-slate-200/70 dark:border-slate-800 rounded-3xl p-5 shadow-card">
         {/* image */}
         {posts[0].img && <Image
           src={posts[0].img}
@@ -36,7 +43,7 @@ const FeaturedPosts = () => {
           w="895"
         />}
         {/* details */}
-        <div className="flex items-center gap-4 text-slate-600">
+        <div className="flex items-center gap-4 text-slate-600 dark:text-slate-300">
           <h1 className="font-semibold lg:text-lg text-brand-700">01.</h1>
           <Link
             className="text-brand-700 lg:text-lg"
@@ -49,7 +56,7 @@ const FeaturedPosts = () => {
         {/* title */}
         <Link
           to={posts[0].slug}
-          className="text-xl lg:text-3xl font-semibold lg:font-bold text-slate-900 hover:text-brand-700 transition"
+            className="text-xl lg:text-3xl font-semibold lg:font-bold text-slate-900 dark:text-slate-100 hover:text-brand-700 transition"
         >
           {posts[0].title}
         </Link>
@@ -57,7 +64,7 @@ const FeaturedPosts = () => {
       {/* Others */}
       <div className="w-full lg:w-1/2 flex flex-col gap-4">
         {/* second */}
-        {posts[1] && <div className="lg:h-1/3 flex justify-between gap-4 bg-white/80 border border-slate-200/70 rounded-3xl p-4 shadow-card">
+        {posts[1] && <div className="lg:h-1/3 flex justify-between gap-4 bg-white/80 dark:bg-slate-900/70 border border-slate-200/70 dark:border-slate-800 rounded-3xl p-4 shadow-card">
           {posts[1].img && <div className="w-1/3 aspect-video">
             <Image
               src={posts[1].img}
@@ -68,7 +75,7 @@ const FeaturedPosts = () => {
           {/* details and title */}
           <div className="w-2/3">
             {/* details */}
-            <div className="flex items-center gap-4 text-sm lg:text-base mb-4 text-slate-600">
+            <div className="flex items-center gap-4 text-sm lg:text-base mb-4 text-slate-600 dark:text-slate-300">
               <h1 className="font-semibold text-brand-700">02.</h1>
               <Link
                 className="text-brand-700"
@@ -81,14 +88,14 @@ const FeaturedPosts = () => {
             {/* title */}
             <Link
               to={posts[1].slug}
-              className="text-base sm:text-lg md:text-2xl lg:text-xl xl:text-2xl font-medium text-slate-900 hover:text-brand-700 transition"
+              className="text-base sm:text-lg md:text-2xl lg:text-xl xl:text-2xl font-medium text-slate-900 dark:text-slate-100 hover:text-brand-700 transition"
             >
               {posts[1].title}
             </Link>
           </div>
         </div>}
         {/* third */}
-        {posts[2] && <div className="lg:h-1/3 flex justify-between gap-4 bg-white/80 border border-slate-200/70 rounded-3xl p-4 shadow-card">
+        {posts[2] && <div className="lg:h-1/3 flex justify-between gap-4 bg-white/80 dark:bg-slate-900/70 border border-slate-200/70 dark:border-slate-800 rounded-3xl p-4 shadow-card">
           {posts[2].img && <div className="w-1/3 aspect-video">
             <Image
               src={posts[2].img}
@@ -99,7 +106,7 @@ const FeaturedPosts = () => {
           {/* details and title */}
           <div className="w-2/3">
             {/* details */}
-            <div className="flex items-center gap-4 text-sm lg:text-base mb-4 text-slate-600">
+            <div className="flex items-center gap-4 text-sm lg:text-base mb-4 text-slate-600 dark:text-slate-300">
               <h1 className="font-semibold text-brand-700">03.</h1>
               <Link
                 className="text-brand-700"
@@ -112,14 +119,14 @@ const FeaturedPosts = () => {
             {/* title */}
             <Link
               to={posts[2].slug}
-              className="text-base sm:text-lg md:text-2xl lg:text-xl xl:text-2xl font-medium text-slate-900 hover:text-brand-700 transition"
+              className="text-base sm:text-lg md:text-2xl lg:text-xl xl:text-2xl font-medium text-slate-900 dark:text-slate-100 hover:text-brand-700 transition"
             >
               {posts[2].title}
             </Link>
           </div>
         </div>}
         {/* fourth */}
-        {posts[3] && <div className="lg:h-1/3 flex justify-between gap-4 bg-white/80 border border-slate-200/70 rounded-3xl p-4 shadow-card">
+        {posts[3] && <div className="lg:h-1/3 flex justify-between gap-4 bg-white/80 dark:bg-slate-900/70 border border-slate-200/70 dark:border-slate-800 rounded-3xl p-4 shadow-card">
           {posts[3].img && <div className="w-1/3 aspect-video">
             <Image
               src={posts[3].img}
@@ -130,7 +137,7 @@ const FeaturedPosts = () => {
           {/* details and title */}
           <div className="w-2/3">
             {/* details */}
-            <div className="flex items-center gap-4 text-sm lg:text-base mb-4 text-slate-600">
+            <div className="flex items-center gap-4 text-sm lg:text-base mb-4 text-slate-600 dark:text-slate-300">
               <h1 className="font-semibold text-brand-700">04.</h1>
               <Link
                 className="text-brand-700"
@@ -143,7 +150,7 @@ const FeaturedPosts = () => {
             {/* title */}
             <Link
               to={posts[3].slug}
-              className="text-base sm:text-lg md:text-2xl lg:text-xl xl:text-2xl font-medium text-slate-900 hover:text-brand-700 transition"
+              className="text-base sm:text-lg md:text-2xl lg:text-xl xl:text-2xl font-medium text-slate-900 dark:text-slate-100 hover:text-brand-700 transition"
             >
               {posts[3].title}
             </Link>
