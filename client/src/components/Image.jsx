@@ -1,12 +1,17 @@
 import { IKImage } from "imagekitio-react";
 
 const Image = ({ src, className, w, h, alt }) => {
-  const isExternalUrl = /^https?:\/\//i.test(src || "");
+  const rawSrc = String(src || "").trim();
+  const normalizedSrc = rawSrc
+    .replace(/^https:\/(?!\/)/i, "https://")
+    .replace(/^http:\/(?!\/)/i, "http://")
+    .replace(/^\/\//, "https://");
+  const isExternalUrl = /^https?:\/\//i.test(normalizedSrc);
 
   if (isExternalUrl) {
     return (
       <img
-        src={src}
+        src={normalizedSrc}
         className={className}
         loading="lazy"
         alt={alt}
@@ -19,7 +24,7 @@ const Image = ({ src, className, w, h, alt }) => {
   return (
     <IKImage
       urlEndpoint={import.meta.env.VITE_IK_URL_ENDPOINT}
-      path={src}
+      path={rawSrc}
       className={className}
       loading="lazy"
       lqip={{ active: true, quality: 20 }}

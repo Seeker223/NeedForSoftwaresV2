@@ -76,11 +76,20 @@ export const getPosts = async (req, res) => {
 };
 
 export const getPost = async (req, res) => {
-  const post = await Post.findOne({ slug: req.params.slug }).populate(
-    "user",
-    "username img"
-  );
-  res.status(200).json(post);
+  try {
+    const post = await Post.findOne({ slug: req.params.slug }).populate(
+      "user",
+      "username img"
+    );
+
+    if (!post) {
+      return res.status(404).json("Post not found!");
+    }
+
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json("Failed to fetch post!");
+  }
 };
 
 export const createPost = async (req, res) => {
