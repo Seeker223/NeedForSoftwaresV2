@@ -13,14 +13,25 @@ import cors from "cors";
 const app = express();
 
 const rawOrigins = process.env.CLIENT_URL || "";
+const normalizeOrigin = (value = "") => value.trim().replace(/\/+$/, "");
 const allowedOrigins = rawOrigins
   .split(",")
-  .map((o) => o.trim())
+  .map(normalizeOrigin)
   .filter(Boolean);
 
 app.use(
   cors({
-    origin: allowedOrigins.length ? allowedOrigins : true,
+    origin: (origin, callback) => {
+      // Allow requests with no Origin header (curl, server-to-server, same-origin).
+      if (!origin) return callback(null, true);
+
+      const normalizedOrigin = normalizeOrigin(origin);
+      if (!allowedOrigins.length || allowedOrigins.includes(normalizedOrigin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
   })
 );
