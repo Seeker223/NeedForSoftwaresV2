@@ -4,11 +4,17 @@
 
 body {
   background: radial-gradient(1200px 600px at 10% -10%, #eef5ff 0%, #f6f8ff 35%, #ffffff 100%);
-  width: 100vw;
   overflow-x: hidden;
   font-family: "Montserrat", sans-serif;
   color: #0f172a;
   transition: background 0.3s ease, color 0.3s ease;
+}
+
+html,
+body,
+#root {
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 html.dark body {

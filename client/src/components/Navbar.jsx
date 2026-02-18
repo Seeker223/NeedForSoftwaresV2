@@ -100,11 +100,19 @@ const Navbar = () => {
       </button>
 
       <div
-        className={`md:hidden fixed left-0 right-0 top-16 bottom-0 z-50 transition-transform duration-300 ${
-          open ? "translate-x-0" : "translate-x-full"
+        className={`md:hidden fixed inset-0 top-16 z-50 transition-all duration-300 ${
+          open
+            ? "translate-x-0 opacity-100"
+            : "translate-x-full opacity-0 pointer-events-none"
         }`}
       >
-        <div className="h-full bg-white dark:bg-slate-950 p-6 flex flex-col justify-between">
+        <div
+          className={`absolute inset-0 bg-slate-900/45 transition-opacity duration-300 ${
+            open ? "opacity-100" : "opacity-0"
+          }`}
+          onClick={() => setOpen(false)}
+        />
+        <div className="relative h-full bg-brand-50 dark:bg-slate-900 p-6 flex flex-col justify-between border-l border-brand-200/60 dark:border-slate-700">
           <nav className="flex flex-col gap-5 text-lg font-medium text-slate-800 dark:text-slate-100">
             <Link to="/">Home</Link>
             <Link to="/posts?sort=trending">Trending</Link>
