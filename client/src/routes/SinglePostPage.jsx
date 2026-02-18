@@ -21,20 +21,20 @@ const SinglePostPage = () => {
     queryFn: () => fetchPost(slug),
   });
 
-  if (isPending) return "loading...";
-  if (error) return "Something went wrong!" + error.message;
-  if (!data) return "Post not found!";
-
-  const pageTitle = `${data.title} | NeedForSoftwares`;
-  const pageDescription =
-    data.desc ||
-    "NeedForSoftwares blog post about the Hender Xender social networking app and Nigeria tech innovation.";
-  const pageUrl = `https://need-for-softwares-v2.vercel.app/${data.slug}`;
-  const pageImage = data.img
+  const pageTitle = data ? `${data.title} | NeedForSoftwares` : "NeedForSoftwares";
+  const pageDescription = data?.desc
+    ? data.desc
+    : "NeedForSoftwares blog post about software engineering and Nigeria tech innovation.";
+  const pageUrl = data
+    ? `https://need-for-softwares-v2.vercel.app/${data.slug}`
+    : "https://need-for-softwares-v2.vercel.app";
+  const pageImage = data?.img
     ? `https://ik.imagekit.io/cu7rwsp4u/${data.img.replace(/^\/+/, "")}`
     : "https://need-for-softwares-v2.vercel.app/logo.png";
 
   useEffect(() => {
+    if (!data) return;
+
     document.title = pageTitle;
 
     const setMetaByName = (name, content) => {
@@ -75,7 +75,11 @@ const SinglePostPage = () => {
     setMetaByName("twitter:title", pageTitle);
     setMetaByName("twitter:description", pageDescription);
     setMetaByName("twitter:image", pageImage);
-  }, [pageDescription, pageImage, pageTitle, pageUrl]);
+  }, [data, pageDescription, pageImage, pageTitle, pageUrl]);
+
+  if (isPending) return "loading...";
+  if (error) return "Something went wrong!" + error.message;
+  if (!data) return "Post not found!";
 
   return (
     <div className="flex flex-col gap-8">
