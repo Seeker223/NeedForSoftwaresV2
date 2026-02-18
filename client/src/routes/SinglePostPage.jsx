@@ -5,8 +5,8 @@ import Search from "../components/Search";
 import Comments from "../components/Comments";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { format } from "timeago.js";
-import { Helmet } from "react-helmet-async";
 
 const fetchPost = async (slug) => {
   const res = await axios.get(`${import.meta.env.VITE_API_URL}/posts/${slug}`);
@@ -34,46 +34,51 @@ const SinglePostPage = () => {
     ? `https://ik.imagekit.io/cu7rwsp4u/${data.img.replace(/^\/+/, "")}`
     : "https://need-for-softwares-v2.vercel.app/logo.png";
 
+  useEffect(() => {
+    document.title = pageTitle;
+
+    const setMetaByName = (name, content) => {
+      let tag = document.head.querySelector(`meta[name="${name}"]`);
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.setAttribute("name", name);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute("content", content);
+    };
+
+    const setMetaByProperty = (property, content) => {
+      let tag = document.head.querySelector(`meta[property="${property}"]`);
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.setAttribute("property", property);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute("content", content);
+    };
+
+    let canonical = document.head.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute("href", pageUrl);
+
+    setMetaByName("description", pageDescription);
+    setMetaByProperty("og:type", "article");
+    setMetaByProperty("og:title", pageTitle);
+    setMetaByProperty("og:description", pageDescription);
+    setMetaByProperty("og:url", pageUrl);
+    setMetaByProperty("og:image", pageImage);
+    setMetaByName("twitter:card", "summary_large_image");
+    setMetaByName("twitter:title", pageTitle);
+    setMetaByName("twitter:description", pageDescription);
+    setMetaByName("twitter:image", pageImage);
+  }, [pageDescription, pageImage, pageTitle, pageUrl]);
+
   return (
     <div className="flex flex-col gap-8">
-      <Helmet>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
-        <link rel="canonical" href={pageUrl} />
-        <meta property="og:type" content="article" />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
-        <meta property="og:url" content={pageUrl} />
-        <meta property="og:image" content={pageImage} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={pageDescription} />
-        <meta name="twitter:image" content={pageImage} />
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            headline: data.title,
-            description: pageDescription,
-            image: pageImage,
-            datePublished: data.createdAt,
-            dateModified: data.updatedAt || data.createdAt,
-            author: {
-              "@type": "Person",
-              name: data.user?.username || "NeedForSoftwares",
-            },
-            publisher: {
-              "@type": "Organization",
-              name: "NeedForSoftwares",
-              logo: {
-                "@type": "ImageObject",
-                url: "https://need-for-softwares-v2.vercel.app/logo.png",
-              },
-            },
-            mainEntityOfPage: pageUrl,
-          })}
-        </script>
-      </Helmet>
       {/* detail */}
       <div className="flex gap-8">
         <div className="lg:w-3/5 flex flex-col gap-6">
