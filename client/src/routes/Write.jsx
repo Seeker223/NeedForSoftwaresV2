@@ -9,7 +9,8 @@ import { toast } from "react-toastify";
 import Upload from "../components/Upload";
 
 const Write = () => {
-  const { isLoaded, isSignedIn } = useUser();
+  const { isLoaded, isSignedIn, user } = useUser();
+  const isAdmin = user?.publicMetadata?.role === "admin";
   const [value, setValue] = useState("");
   const [cover, setCover] = useState("");
   const [img, setImg] = useState("");
@@ -52,6 +53,14 @@ const Write = () => {
 
   if (isLoaded && !isSignedIn) {
     return <div className="text-slate-600 dark:text-slate-300">You should login!</div>;
+  }
+
+  if (isLoaded && isSignedIn && !isAdmin) {
+    return (
+      <div className="text-slate-600 dark:text-slate-300">
+        Only admins can create posts.
+      </div>
+    );
   }
 
   const handleSubmit = (e) => {

@@ -13,6 +13,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const { user } = useUser();
+  const isAdmin = user?.publicMetadata?.role === "admin";
 
   useEffect(() => {
     setOpen(false);
@@ -43,12 +44,14 @@ const Navbar = () => {
           Most Popular
         </Link>
         <SignedIn>
+          {isAdmin && (
           <Link
             to="/write"
             className="px-4 py-2 rounded-full bg-brand-700 text-white shadow-soft hover:bg-brand-800 transition"
           >
             Write Post
           </Link>
+          )}
         </SignedIn>
         <ThemeToggle />
         <SignedOut>
@@ -117,9 +120,7 @@ const Navbar = () => {
             <Link to="/">Home</Link>
             <Link to="/posts?sort=trending">Trending</Link>
             <Link to="/posts?sort=popular">Most Popular</Link>
-            <SignedIn>
-              <Link to="/write">Write Post</Link>
-            </SignedIn>
+            <SignedIn>{isAdmin && <Link to="/write">Write Post</Link>}</SignedIn>
           </nav>
 
           <div className="border-t border-slate-200 dark:border-slate-800 pt-5 space-y-4">
