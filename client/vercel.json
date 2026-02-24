@@ -1,11 +1,10 @@
 {
   "functions": {
     "api/index.js": {
-      "runtime": "nodejs20.x",
       "includeFiles": "dist/**"
     }
   },
-  "routes": [
-    { "src": "/(.*)", "dest": "/api/index.js" }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/api/index.js" }
   ]
 }
