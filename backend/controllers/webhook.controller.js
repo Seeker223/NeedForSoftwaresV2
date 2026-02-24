@@ -3,6 +3,16 @@ import Post from "../models/post.model.js";
 import Comment from "../models/comment.model.js";
 import { Webhook } from "svix";
 
+const getRoleFromEvent = (evtData) => {
+  const role =
+    evtData?.public_metadata?.role ||
+    evtData?.unsafe_metadata?.role ||
+    evtData?.private_metadata?.role ||
+    evtData?.metadata?.role;
+
+  return role === "admin" ? "admin" : "user";
+};
+
 export const clerkWebHook = async (req, res) => {
   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
 
@@ -39,9 +49,19 @@ export const clerkWebHook = async (req, res) => {
         evt.data.id,
       email: primaryEmail || "unknown@example.com",
       img: evt.data.image_url || evt.data.profile_image_url || null,
+      role: getRoleFromEvent(evt.data),
     });
 
     await newUser.save();
+  }
+
+  if (evt.type === "user.updated") {
+    await User.findOneAndUpdate(
+      { clerkUserId: evt.data.id },
+      {
+        role: getRoleFromEvent(evt.data),
+      }
+    );
   }
 
   if (evt.type === "user.deleted") {

@@ -111,6 +111,10 @@ export const createPost = async (req, res) => {
     return res.status(404).json("User not found!");
   }
 
+  if (user.role !== "admin") {
+    return res.status(403).json("Only admins can create posts!");
+  }
+
   let slug = req.body.title.replace(/ /g, "-").toLowerCase();
 
   let existingPost = await Post.findOne({ slug });
@@ -136,17 +140,15 @@ export const deletePost = async (req, res) => {
     return res.status(401).json("Not authenticated!");
   }
 
-  const role = req.auth.sessionClaims?.metadata?.role || "user";
-
-  if (role === "admin") {
-    await Post.findByIdAndDelete(req.params.id);
-    return res.status(200).json("Post has been deleted");
-  }
-
   const user = await ensureUser(clerkUserId);
 
   if (!user) {
     return res.status(404).json("User not found!");
+  }
+
+  if (user.role === "admin") {
+    await Post.findByIdAndDelete(req.params.id);
+    return res.status(200).json("Post has been deleted");
   }
 
   const deletedPost = await Post.findOneAndDelete({
@@ -169,9 +171,13 @@ export const featurePost = async (req, res) => {
     return res.status(401).json("Not authenticated!");
   }
 
-  const role = req.auth.sessionClaims?.metadata?.role || "user";
+  const user = await ensureUser(clerkUserId);
 
-  if (role !== "admin") {
+  if (!user) {
+    return res.status(404).json("User not found!");
+  }
+
+  if (user.role !== "admin") {
     return res.status(403).json("You cannot feature posts!");
   }
 
