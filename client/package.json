@@ -4,10 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "node ssr-server.js",
+    "dev:spa": "vite",
+    "dev:ssr": "node ssr-server.js",
+    "build": "npm run build:ssr",
+    "build:ssr": "vite build --outDir dist/client && vite build --ssr src/entry-server.jsx --outDir dist/server",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "preview:ssr": "node ssr-server.js --prod"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.15.1",
