@@ -92,6 +92,23 @@ export const getPost = async (req, res) => {
   }
 };
 
+export const getPostById = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id).populate(
+      "user",
+      "username img"
+    );
+
+    if (!post) {
+      return res.status(404).json("Post not found!");
+    }
+
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json("Failed to fetch post!");
+  }
+};
+
 export const createPost = async (req, res) => {
   const clerkUserId = req.auth.userId;
 
@@ -105,15 +122,13 @@ export const createPost = async (req, res) => {
     return res.status(400).json("Title is required!");
   }
 
-  const user = await ensureUser(clerkUserId);
+  const user = req.dbUser || (await ensureUser(clerkUserId));
 
   if (!user) {
     return res.status(404).json("User not found!");
   }
 
-  if (user.role !== "admin") {
-    return res.status(403).json("Only admins can create posts!");
-  }
+  // Route is protected by ensureAdmin middleware.
 
   let slug = req.body.title.replace(/ /g, "-").toLowerCase();
 
@@ -140,27 +155,88 @@ export const deletePost = async (req, res) => {
     return res.status(401).json("Not authenticated!");
   }
 
-  const user = await ensureUser(clerkUserId);
+  const user = req.dbUser || (await ensureUser(clerkUserId));
 
   if (!user) {
     return res.status(404).json("User not found!");
   }
 
-  if (user.role === "admin") {
-    await Post.findByIdAndDelete(req.params.id);
-    return res.status(200).json("Post has been deleted");
-  }
-
-  const deletedPost = await Post.findOneAndDelete({
-    _id: req.params.id,
-    user: user._id,
-  });
-
-  if (!deletedPost) {
-    return res.status(403).json("You can delete only your posts!");
-  }
+  // Route is protected by ensureAdmin middleware.
+  await Post.findByIdAndDelete(req.params.id);
 
   res.status(200).json("Post has been deleted");
+};
+
+export const updatePost = async (req, res) => {
+  const clerkUserId = req.auth.userId;
+  const postId = req.params.id;
+
+  if (!clerkUserId) {
+    return res.status(401).json("Not authenticated!");
+  }
+
+  const user = req.dbUser || (await ensureUser(clerkUserId));
+
+  if (!user) {
+    return res.status(404).json("User not found!");
+  }
+
+  // Route is protected by ensureAdmin middleware.
+  const post = await Post.findById(postId);
+
+  if (!post) {
+    return res.status(404).json("Post not found!");
+  }
+
+  const nextTitle =
+    typeof req.body?.title === "string" ? req.body.title.trim() : post.title;
+
+  if (!nextTitle) {
+    return res.status(400).json("Title is required!");
+  }
+
+  const nextCategory =
+    typeof req.body?.category === "string" && req.body.category.trim()
+      ? req.body.category.trim()
+      : post.category;
+
+  const nextDesc =
+    typeof req.body?.desc === "string" ? req.body.desc : post.desc;
+
+  const nextContent =
+    typeof req.body?.content === "string" && req.body.content.trim()
+      ? req.body.content
+      : post.content;
+
+  const nextImg = typeof req.body?.img === "string" ? req.body.img : post.img;
+
+  if (!nextContent || !nextContent.trim()) {
+    return res.status(400).json("Content is required!");
+  }
+
+  if (nextTitle !== post.title) {
+    let slug = nextTitle.replace(/ /g, "-").toLowerCase();
+
+    let existingPost = await Post.findOne({ slug, _id: { $ne: post._id } });
+    let counter = 2;
+
+    while (existingPost) {
+      slug = `${slug}-${counter}`;
+      existingPost = await Post.findOne({ slug, _id: { $ne: post._id } });
+      counter++;
+    }
+
+    post.slug = slug;
+  }
+
+  post.title = nextTitle;
+  post.category = nextCategory;
+  post.desc = nextDesc;
+  post.content = nextContent;
+  post.img = nextImg;
+
+  const updated = await post.save();
+  res.status(200).json(updated);
 };
 
 export const featurePost = async (req, res) => {
@@ -171,15 +247,13 @@ export const featurePost = async (req, res) => {
     return res.status(401).json("Not authenticated!");
   }
 
-  const user = await ensureUser(clerkUserId);
+  const user = req.dbUser || (await ensureUser(clerkUserId));
 
   if (!user) {
     return res.status(404).json("User not found!");
   }
 
-  if (user.role !== "admin") {
-    return res.status(403).json("You cannot feature posts!");
-  }
+  // Route is protected by ensureAdmin middleware.
 
   const post = await Post.findById(postId);
 
@@ -214,6 +288,7 @@ const getImageKit = () => {
 };
 
 export const uploadAuth = async (req, res) => {
+  // Route is protected by ensureAdmin middleware.
   const ik = getImageKit();
   const result = ik.getAuthenticationParameters();
   res.send(result);

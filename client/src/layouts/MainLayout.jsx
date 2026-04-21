@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { SignedIn } from "@clerk/clerk-react";
+import { SignedIn, useUser } from "@clerk/clerk-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import LoadingModal from "../components/LoadingModal";
@@ -8,6 +8,8 @@ import NotificationWatcher from "../components/NotificationWatcher";
 
 const MainLayout = () => {
   const [showLoading, setShowLoading] = useState(true);
+  const { user } = useUser();
+  const isAdmin = user?.publicMetadata?.role === "admin";
 
   useEffect(() => {
     const timer = setTimeout(() => setShowLoading(false), 900);
@@ -24,12 +26,14 @@ const MainLayout = () => {
         <Footer />
       </div>
       <SignedIn>
-        <Link
-          to="/write"
-          className="fixed md:hidden bottom-6 right-4 z-40 px-4 py-3 rounded-full bg-brand-700 text-white shadow-soft font-semibold"
-        >
-          Write Post
-        </Link>
+        {isAdmin && (
+          <Link
+            to="/write"
+            className="fixed md:hidden bottom-6 right-4 z-40 px-4 py-3 rounded-full bg-brand-700 text-white shadow-soft font-semibold"
+          >
+            Write Post
+          </Link>
+        )}
       </SignedIn>
     </>
   );

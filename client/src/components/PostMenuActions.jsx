@@ -181,7 +181,7 @@ const PostMenuActions = ({ post }) => {
           )}
         </div>
       )}
-      {user && (post.user.username === user.username || isAdmin) && (
+      {isAdmin && (
         <div
           className="flex items-center gap-2 py-2 text-sm cursor-pointer text-slate-700 hover:text-red-600 transition"
           onClick={handleDelete}

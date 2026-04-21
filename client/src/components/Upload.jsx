@@ -1,30 +1,41 @@
 import { IKContext, IKUpload } from "imagekitio-react";
 import { useRef } from "react";
 import { toast } from "react-toastify";
-
-const authenticator = async () => {
-  try {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/posts/upload-auth`
-    );
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(
-        `Request failed with status ${response.status}: ${errorText}`
-      );
-    }
-
-    const data = await response.json();
-    const { signature, expire, token } = data;
-    return { signature, expire, token };
-  } catch (error) {
-    throw new Error(`Authentication request failed: ${error.message}`);
-  }
-};
+import { useAuth } from "@clerk/clerk-react";
 
 const Upload = ({ children, type, setProgress, setData }) => {
   const ref = useRef(null);
+  const { getToken } = useAuth();
+
+  const authenticator = async () => {
+    try {
+      const token = await getToken();
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/posts/upload-auth`,
+        {
+          headers: token
+            ? {
+                Authorization: `Bearer ${token}`,
+              }
+            : undefined,
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `Request failed with status ${response.status}: ${errorText}`
+        );
+      }
+
+      const data = await response.json();
+      const { signature, expire, token } = data;
+      return { signature, expire, token };
+    } catch (error) {
+      throw new Error(`Authentication request failed: ${error.message}`);
+    }
+  };
 
   const onError = (err) => {
     console.log(err);

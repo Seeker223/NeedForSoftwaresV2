@@ -88,12 +88,20 @@ const Navbar = () => {
           </Link>
           <SignedIn>
             {isAdmin && (
-              <Link
-                to="/write"
-                className="rounded-2xl px-4 py-3 bg-white/95 dark:bg-slate-900/85 border border-slate-200 dark:border-slate-700 shadow-sm"
-              >
-                Write Post
-              </Link>
+              <>
+                <Link
+                  to="/cpanel"
+                  className="rounded-2xl px-4 py-3 bg-white/95 dark:bg-slate-900/85 border border-slate-200 dark:border-slate-700 shadow-sm"
+                >
+                  Control Panel
+                </Link>
+                <Link
+                  to="/write"
+                  className="rounded-2xl px-4 py-3 bg-white/95 dark:bg-slate-900/85 border border-slate-200 dark:border-slate-700 shadow-sm"
+                >
+                  Write Post
+                </Link>
+              </>
             )}
           </SignedIn>
         </nav>
@@ -154,12 +162,17 @@ const Navbar = () => {
         </Link>
         <SignedIn>
           {isAdmin && (
-          <Link
-            to="/write"
-            className="px-4 py-2 rounded-full bg-brand-700 text-white shadow-soft hover:bg-brand-800 transition"
-          >
-            Write Post
-          </Link>
+            <>
+              <Link to="/cpanel" className="hover:text-brand-700 transition">
+                Control Panel
+              </Link>
+              <Link
+                to="/write"
+                className="px-4 py-2 rounded-full bg-brand-700 text-white shadow-soft hover:bg-brand-800 transition"
+              >
+                Write Post
+              </Link>
+            </>
           )}
         </SignedIn>
         <ThemeToggle />
