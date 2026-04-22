@@ -6,6 +6,8 @@ import PostListPage from "./routes/PostListPage.jsx";
 import SinglePostPage from "./routes/SinglePostPage.jsx";
 import LoginPage from "./routes/LoginPage.jsx";
 import RegisterPage from "./routes/RegisterPage.jsx";
+import Cpanel from "./routes/Cpanel.jsx";
+import EditPost from "./routes/EditPost.jsx";
 
 const ClientOnlyWrite = () => {
   const [WriteComponent, setWriteComponent] = useState(null);
@@ -40,6 +42,8 @@ const App = () => {
           path="/write"
           element={<ClientOnlyWrite />}
         />
+        <Route path="/cpanel" element={<Cpanel />} />
+        <Route path="/cpanel/posts/:id/edit" element={<EditPost />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
       </Route>

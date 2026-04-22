@@ -30,8 +30,8 @@ const Upload = ({ children, type, setProgress, setData }) => {
       }
 
       const data = await response.json();
-      const { signature, expire, token } = data;
-      return { signature, expire, token };
+      const { signature, expire, token: ikToken } = data;
+      return { signature, expire, token: ikToken };
     } catch (error) {
       throw new Error(`Authentication request failed: ${error.message}`);
     }

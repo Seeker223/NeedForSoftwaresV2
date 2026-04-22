@@ -1,12 +1,17 @@
 import { useAuth, useUser } from "@clerk/clerk-react";
 import "react-quill-new/dist/quill.snow.css";
 import ReactQuill from "react-quill-new";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Upload from "../components/Upload";
+
+const fetchCategories = async () => {
+  const res = await axios.get(`${import.meta.env.VITE_API_URL}/categories`);
+  return res.data;
+};
 
 const Write = () => {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -16,6 +21,11 @@ const Write = () => {
   const [img, setImg] = useState("");
   const [video, setVideo] = useState("");
   const [progress, setProgress] = useState(0);
+
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategories,
+  });
 
   useEffect(() => {
     img && setValue((prev) => prev + `<p><img src="${img.url}"/></p>`);
@@ -110,12 +120,22 @@ const Write = () => {
             id=""
             className="p-2 rounded-xl bg-white/80 dark:bg-slate-900/70 border border-slate-200/70 dark:border-slate-800 shadow-card"
           >
-            <option value="general">General</option>
-            <option value="web-design">Web Design</option>
-            <option value="development">Development</option>
-            <option value="databases">Databases</option>
-            <option value="seo">Search Engines</option>
-            <option value="marketing">Marketing</option>
+            {Array.isArray(categories) && categories.length ? (
+              categories.map((cat) => (
+                <option key={cat._id} value={cat.slug}>
+                  {cat.name}
+                </option>
+              ))
+            ) : (
+              <>
+                <option value="general">General</option>
+                <option value="web-design">Web Design</option>
+                <option value="development">Development</option>
+                <option value="databases">Databases</option>
+                <option value="seo">Search Engines</option>
+                <option value="marketing">Marketing</option>
+              </>
+            )}
           </select>
         </div>
         <textarea

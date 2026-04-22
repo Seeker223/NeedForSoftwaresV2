@@ -13,12 +13,22 @@ const fetchPost = async (slug) => {
   return res.data;
 };
 
+const fetchCategories = async () => {
+  const res = await axios.get(`${import.meta.env.VITE_API_URL}/categories`);
+  return res.data;
+};
+
 const SinglePostPage = () => {
   const { slug } = useParams();
 
   const { isPending, error, data } = useQuery({
     queryKey: ["post", slug],
     queryFn: () => fetchPost(slug),
+  });
+
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategories,
   });
 
   const pageTitle = data ? `${data.title} | NeedForSoftwares` : "NeedForSoftwares";
@@ -155,22 +165,38 @@ const SinglePostPage = () => {
           <PostMenuActions post={data}/>
           <h1 className="mt-8 mb-4 text-sm font-semibold text-slate-700 dark:text-slate-200">Categories</h1>
           <div className="flex flex-col gap-2 text-sm text-slate-600 dark:text-slate-300">
-            <Link className="hover:text-brand-700 transition">All</Link>
-            <Link className="hover:text-brand-700 transition" to="/">
-              Web Design
+            <Link className="hover:text-brand-700 transition" to="/posts">
+              All
             </Link>
-            <Link className="hover:text-brand-700 transition" to="/">
-              Development
-            </Link>
-            <Link className="hover:text-brand-700 transition" to="/">
-              Databases
-            </Link>
-            <Link className="hover:text-brand-700 transition" to="/">
-              Search Engines
-            </Link>
-            <Link className="hover:text-brand-700 transition" to="/">
-              Marketing
-            </Link>
+            {Array.isArray(categories) && categories.length ? (
+              categories.map((cat) => (
+                <Link
+                  key={cat._id}
+                  className="hover:text-brand-700 transition"
+                  to={`/posts?cat=${cat.slug}`}
+                >
+                  {cat.name}
+                </Link>
+              ))
+            ) : (
+              <>
+                <Link className="hover:text-brand-700 transition" to="/posts?cat=web-design">
+                  Web Design
+                </Link>
+                <Link className="hover:text-brand-700 transition" to="/posts?cat=development">
+                  Development
+                </Link>
+                <Link className="hover:text-brand-700 transition" to="/posts?cat=databases">
+                  Databases
+                </Link>
+                <Link className="hover:text-brand-700 transition" to="/posts?cat=seo">
+                  Search Engines
+                </Link>
+                <Link className="hover:text-brand-700 transition" to="/posts?cat=marketing">
+                  Marketing
+                </Link>
+              </>
+            )}
           </div>
           <h1 className="mt-8 mb-4 text-sm font-semibold text-slate-700 dark:text-slate-200">Search</h1>
           <Search />

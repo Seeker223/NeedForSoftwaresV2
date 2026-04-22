@@ -1,8 +1,19 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import Search from "./Search";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+
+const fetchCategories = async () => {
+  const res = await axios.get(`${import.meta.env.VITE_API_URL}/categories`);
+  return res.data;
+};
 
 const SideMenu = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategories,
+  });
 
   const handleFilterChange = (e) => {
     if (searchParams.get("sort") !== e.target.value) {
@@ -71,12 +82,64 @@ const SideMenu = () => {
       </div>
       <h1 className="mt-8 mb-4 text-sm font-semibold text-slate-700">Categories</h1>
       <div className="flex flex-col gap-2 text-sm">
-        <span className="cursor-pointer text-slate-600 hover:text-brand-700 transition" onClick={()=>handleCategoryChange("general")}>All</span>
-        <span className="cursor-pointer text-slate-600 hover:text-brand-700 transition" onClick={()=>handleCategoryChange("web-design")}>Web Design</span>
-        <span className="cursor-pointer text-slate-600 hover:text-brand-700 transition" onClick={()=>handleCategoryChange("development")}>Development</span>
-        <span className="cursor-pointer text-slate-600 hover:text-brand-700 transition" onClick={()=>handleCategoryChange("databases")}>Databases</span>
-        <span className="cursor-pointer text-slate-600 hover:text-brand-700 transition" onClick={()=>handleCategoryChange("seo")}>Search Engines</span>
-        <span className="cursor-pointer text-slate-600 hover:text-brand-700 transition" onClick={()=>handleCategoryChange("marketing")}>Marketing</span>
+        {Array.isArray(categories) && categories.length ? (
+          <>
+            <span
+              className="cursor-pointer text-slate-600 hover:text-brand-700 transition"
+              onClick={() => handleCategoryChange("general")}
+            >
+              All
+            </span>
+            {categories.map((cat) => (
+              <span
+                key={cat._id}
+                className="cursor-pointer text-slate-600 hover:text-brand-700 transition"
+                onClick={() => handleCategoryChange(cat.slug)}
+              >
+                {cat.name}
+              </span>
+            ))}
+          </>
+        ) : (
+          <>
+            <span
+              className="cursor-pointer text-slate-600 hover:text-brand-700 transition"
+              onClick={() => handleCategoryChange("general")}
+            >
+              All
+            </span>
+            <span
+              className="cursor-pointer text-slate-600 hover:text-brand-700 transition"
+              onClick={() => handleCategoryChange("web-design")}
+            >
+              Web Design
+            </span>
+            <span
+              className="cursor-pointer text-slate-600 hover:text-brand-700 transition"
+              onClick={() => handleCategoryChange("development")}
+            >
+              Development
+            </span>
+            <span
+              className="cursor-pointer text-slate-600 hover:text-brand-700 transition"
+              onClick={() => handleCategoryChange("databases")}
+            >
+              Databases
+            </span>
+            <span
+              className="cursor-pointer text-slate-600 hover:text-brand-700 transition"
+              onClick={() => handleCategoryChange("seo")}
+            >
+              Search Engines
+            </span>
+            <span
+              className="cursor-pointer text-slate-600 hover:text-brand-700 transition"
+              onClick={() => handleCategoryChange("marketing")}
+            >
+              Marketing
+            </span>
+          </>
+        )}
       </div>
     </div>
   );
