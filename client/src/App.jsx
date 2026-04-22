@@ -7,7 +7,6 @@ import SinglePostPage from "./routes/SinglePostPage.jsx";
 import LoginPage from "./routes/LoginPage.jsx";
 import RegisterPage from "./routes/RegisterPage.jsx";
 import Cpanel from "./routes/Cpanel.jsx";
-import EditPost from "./routes/EditPost.jsx";
 
 const ClientOnlyWrite = () => {
   const [WriteComponent, setWriteComponent] = useState(null);
@@ -31,6 +30,28 @@ const ClientOnlyWrite = () => {
   return <WriteComponent />;
 };
 
+const ClientOnlyEditPost = () => {
+  const [EditPostComponent, setEditPostComponent] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    import("./routes/EditPost.jsx").then((module) => {
+      if (mounted) {
+        setEditPostComponent(() => module.default);
+      }
+    });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  if (!EditPostComponent) {
+    return <div className="py-10 text-slate-600">Loading editor...</div>;
+  }
+
+  return <EditPostComponent />;
+};
+
 const App = () => {
   return (
     <Routes>
@@ -43,7 +64,7 @@ const App = () => {
           element={<ClientOnlyWrite />}
         />
         <Route path="/cpanel" element={<Cpanel />} />
-        <Route path="/cpanel/posts/:id/edit" element={<EditPost />} />
+        <Route path="/cpanel/posts/:id/edit" element={<ClientOnlyEditPost />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
       </Route>
